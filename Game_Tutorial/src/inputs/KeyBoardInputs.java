@@ -22,13 +22,13 @@ public class KeyBoardInputs implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int key =  e.getKeyCode();
 		if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT){
-			gamePanel.changeXDelta(-5);
+			gamePanel.changeXDelta(-10);
 		}else if(key == KeyEvent.VK_W || key == KeyEvent.VK_UP){
-			gamePanel.changeYDelta(-5);
+			gamePanel.changeYDelta(-10);
 		}else if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT){
-			gamePanel.changeXDelta(5);
+			gamePanel.changeXDelta(10);
 		}else if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
-			gamePanel.changeYDelta(5);
+			gamePanel.changeYDelta(10);
 		}
 	}
 
