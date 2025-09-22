@@ -8,21 +8,29 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import inputs.KeyBoardInputs;
 import inputs.MouseInputs;
 
 public class GamePanel extends JPanel {
+    
+    private final int NUM_FRAMES = 4; // number of pirate frames
 
     private MouseInputs mouseInputs;
-    private int xDelta = 0, yDelta = 0;
+    private int xDelta = 100, yDelta = 100;
 
-    private BufferedImage img, subImage;
+    private BufferedImage img;
+    private BufferedImage[] pirateMovement; //for multiple animation we can go with 2d matrix too
 
+    private int aniTick, aniIndex, aniSpeed = 15;
+    
     public GamePanel() {
         mouseInputs = new MouseInputs(this);
 
         importImg();
+        loadAnimations();
+        
         setPanelSize();
 
         addKeyListener(new KeyBoardInputs(this));
@@ -30,14 +38,28 @@ public class GamePanel extends JPanel {
         addMouseMotionListener(mouseInputs);
 
         setFocusable(true); // needed for keyboard input
+
+        // Timer for animation (updates every 150ms)
+        
+    }
+
+    private void loadAnimations() {
+        int frameWidth = 64;  // auto-calc width
+        int frameHeight = img.getHeight(); // full height of sheet
+
+        pirateMovement = new BufferedImage[NUM_FRAMES];
+        for (int i = 0; i < NUM_FRAMES; i++) {
+            int x = i * frameWidth;
+            pirateMovement[i] = img.getSubimage(x, 0, 128, frameHeight);
+        }
     }
 
     private void importImg() {
-        try (InputStream impImg = getClass().getResourceAsStream("/spriteatlas.png")) {
+        try (InputStream impImg = getClass().getResourceAsStream("/PirateMovement.png")) {
             if (impImg != null) {
                 img = ImageIO.read(impImg);
             } else {
-                System.err.println("Image not found: /spriteatlas.png");
+                System.err.println("Image not found: /PirateMovement.png");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,7 +67,7 @@ public class GamePanel extends JPanel {
     }
 
     private void setPanelSize() {
-        Dimension size = new Dimension(1280, 800);
+        Dimension size = new Dimension(800, 600);
         setMinimumSize(size);
         setPreferredSize(size);
         setMaximumSize(size);
@@ -70,16 +92,21 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        if (img != null) {
-        	subImage = img.getSubimage(2*60,1*32,64, 32);
-            g.drawImage(subImage, xDelta, yDelta,128,80, null);
-
-            // OR stretch image to fill the panel:
-            // g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        updateAnimationTick();
+        if (pirateMovement != null) {
+            g.drawImage(pirateMovement[aniIndex], xDelta, yDelta, null);
         }
-
-        // Draw rectangle on top
-        //g.fillRect(100 + xDelta, 100 + yDelta, 200, 50);
     }
+
+	private void updateAnimationTick() {
+		aniTick++;
+		if(aniTick >= aniSpeed) {
+			aniTick = 0;
+			aniIndex++;
+			if(aniIndex >= NUM_FRAMES) {
+				aniIndex = 0;
+			}
+		}
+		
+	}
 }
