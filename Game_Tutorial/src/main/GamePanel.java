@@ -15,15 +15,16 @@ import inputs.MouseInputs;
 
 public class GamePanel extends JPanel {
     
-    private final int NUM_FRAMES = 4; // number of pirate frames
+    private final int NUM_FRAMES = 6; // number of pirate frames
+
 
     private MouseInputs mouseInputs;
     private int xDelta = 100, yDelta = 100;
 
     private BufferedImage img;
-    private BufferedImage[] pirateMovement; //for multiple animation we can go with 2d matrix too
+    private BufferedImage[] pirateMovement; 
 
-    private int aniTick, aniIndex, aniSpeed = 15;
+    private int aniTick, aniIndex, aniSpeed = 15; // speed = higher → slower animation
     
     public GamePanel() {
         mouseInputs = new MouseInputs(this);
@@ -38,28 +39,24 @@ public class GamePanel extends JPanel {
         addMouseMotionListener(mouseInputs);
 
         setFocusable(true); // needed for keyboard input
-
-        // Timer for animation (updates every 150ms)
-        
     }
 
     private void loadAnimations() {
-        int frameWidth = 64;  // auto-calc width
-        int frameHeight = img.getHeight(); // full height of sheet
+        int frameWidth = img.getWidth() / NUM_FRAMES;
+        int frameHeight = img.getHeight(); 
 
         pirateMovement = new BufferedImage[NUM_FRAMES];
         for (int i = 0; i < NUM_FRAMES; i++) {
-            int x = i * frameWidth;
-            pirateMovement[i] = img.getSubimage(x, 0, 128, frameHeight);
+            pirateMovement[i] = img.getSubimage(i * frameWidth, 0, 32, 32);
         }
     }
 
     private void importImg() {
-        try (InputStream impImg = getClass().getResourceAsStream("/PirateMovement.png")) {
+        try (InputStream impImg = getClass().getResourceAsStream("/Character_1.png")) {
             if (impImg != null) {
                 img = ImageIO.read(impImg);
             } else {
-                System.err.println("Image not found: /PirateMovement.png");
+                System.err.println("Image not found: /Character_1.png");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,15 +95,14 @@ public class GamePanel extends JPanel {
         }
     }
 
-	private void updateAnimationTick() {
-		aniTick++;
-		if(aniTick >= aniSpeed) {
-			aniTick = 0;
-			aniIndex++;
-			if(aniIndex >= NUM_FRAMES) {
-				aniIndex = 0;
-			}
-		}
-		
-	}
+    private void updateAnimationTick() {
+        aniTick++;
+        if (aniTick >= aniSpeed) {
+            aniTick = 0;
+            aniIndex++;
+            if (aniIndex >= NUM_FRAMES) {
+                aniIndex = 0;
+            }
+        }
+    }
 }
