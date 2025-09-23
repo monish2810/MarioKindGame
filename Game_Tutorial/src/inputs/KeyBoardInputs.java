@@ -2,6 +2,7 @@ package inputs;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import utils.Constants.PlayerDirections;
 
 import main.GamePanel;
 
@@ -14,7 +15,6 @@ public class KeyBoardInputs implements KeyListener {
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -22,20 +22,22 @@ public class KeyBoardInputs implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int key =  e.getKeyCode();
 		if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT){
-			gamePanel.changeXDelta(-10);
+			gamePanel.updateDirection(PlayerDirections.LEFT);
 		}else if(key == KeyEvent.VK_W || key == KeyEvent.VK_UP){
-			gamePanel.changeYDelta(-10);
+			gamePanel.updateDirection(PlayerDirections.UP);
 		}else if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT){
-			gamePanel.changeXDelta(10);
+			gamePanel.updateDirection(PlayerDirections.RIGHT);
 		}else if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
-			gamePanel.changeYDelta(10);
+			gamePanel.updateDirection(PlayerDirections.DOWN);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
-		
+		int key =  e.getKeyCode();
+		if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT||key == KeyEvent.VK_W || key == KeyEvent.VK_UP||key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT||key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN){
+			gamePanel.isPlayerMoving(false);
+		}
 	}
 
 }

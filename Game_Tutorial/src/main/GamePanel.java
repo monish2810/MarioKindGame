@@ -13,6 +13,7 @@ import javax.swing.Timer;
 import inputs.KeyBoardInputs;
 
 import utils.Constants.PlayerConstants;
+import utils.Constants.PlayerDirections;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel {
@@ -26,9 +27,11 @@ public class GamePanel extends JPanel {
 
     private BufferedImage[][] characterStatic; 
 
-    private int aniTick, aniIndex, aniSpeed = 12; // speed = higher → slower animation
+    private int aniTick, aniIndex, aniSpeed = 15; // speed = higher → slower animation
     
     private int playerAction = PlayerConstants.IDLE;
+    private boolean isMoving  = false;
+    private int movingDirection = -1;
     
     public GamePanel() {
         //mouseInputs = new MouseInputs(this);
@@ -99,8 +102,18 @@ public class GamePanel extends JPanel {
 			e.printStackTrace();
 		}
     }
-
-
+    
+    public void updateDirection(int direction) {
+    	movingDirection = direction;
+    	isMoving = true;
+    }
+    
+    public void isPlayerMoving(boolean isMoving) {
+    	this.isMoving = isMoving;
+    	if(!isMoving) {
+    		movingDirection = -1;
+    	}
+    }
     private void setPanelSize() {
         Dimension size = new Dimension(800, 600);
         setMinimumSize(size);
@@ -118,21 +131,12 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
-    public void mouseChangeXYDelta(int x, int y) {
-        this.xDelta = x - 100;
-        this.yDelta = y - 100;
-        repaint();
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        updateAnimationTick();
-        if (characterStatic != null) {
-            g.drawImage(characterStatic[playerAction][aniIndex], xDelta, yDelta, 128, 128, null);
-        }
-    }
-
+//    public void mouseChangeXYDelta(int x, int y) {
+//        this.xDelta = x - 100;
+//        this.yDelta = y - 100;
+//        repaint();
+//    }
+    
     private void updateAnimationTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
@@ -141,6 +145,45 @@ public class GamePanel extends JPanel {
             if (aniIndex >= NUM_FRAMES) {
                 aniIndex = 0;
             }
+        }
+    }
+    
+    private void setAnimation() {
+    	if(isMoving) {
+    		playerAction = PlayerConstants.WALK;
+    	}else {
+    		playerAction = PlayerConstants.IDLE;
+    	}
+    }
+
+    private void updateDirection() {
+		if(isMoving) {
+			switch(movingDirection) {
+				case PlayerDirections.LEFT:
+					xDelta -= 2;
+					break;
+				case PlayerDirections.UP:
+					yDelta -= 2;		
+					break;
+				case PlayerDirections.RIGHT:
+					xDelta += 2;
+					break;
+				case PlayerDirections.DOWN:
+					yDelta += 2;
+					break;
+			}
+		}
+		
+	}
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        updateAnimationTick();
+        setAnimation();
+        updateDirection();
+        if (characterStatic != null) {
+            g.drawImage(characterStatic[playerAction][aniIndex], xDelta, yDelta, 128, 128, null);
         }
     }
 }
