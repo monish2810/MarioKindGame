@@ -3,7 +3,11 @@ package main;
 public class MainClass {
 
 	public static void main(String[] args) {
-		new GameClass();
+		try {
+			new GameClass();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
