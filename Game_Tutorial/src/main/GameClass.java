@@ -1,6 +1,7 @@
 package main;
 
 public class GameClass implements Runnable{
+	@SuppressWarnings("unused")
 	private GameWindow gameWindow;
 	private GamePanel gamePanel;
 	private Thread gameThread; // gameloop
