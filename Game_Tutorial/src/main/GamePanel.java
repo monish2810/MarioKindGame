@@ -101,14 +101,21 @@ public class GamePanel extends JPanel {
             }
         }
     }
+    
+    public void updateGame() {
+    	try {
+    		updateAnimationTick();
+	        setAnimation();
+	        updateDirection();
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         try {
-	        updateAnimationTick();
-	        setAnimation();
-	        updateDirection();
 	        if (characterStatic != null
 	                && playerAction >= 0 && playerAction < ACTIONS
 	                && aniIndex >= 0 && aniIndex < NUM_FRAMES
