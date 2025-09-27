@@ -34,8 +34,6 @@ public class GameClass implements Runnable {
     public void run() {
         double timePerFrame = 1_000_000_000.0 / FPS;
         double timePerUpdate = 1_000_000_000.0/UPS;
-        long lastFrame = System.nanoTime();
-        long now;
         
         long previousTime = System.nanoTime();
         
@@ -48,7 +46,6 @@ public class GameClass implements Runnable {
         
         
         while (running) {
-            now = System.nanoTime();
             long currTime = System.nanoTime();
             deltaU += (currTime - previousTime)/timePerUpdate;
             deltaF += (currTime - previousTime)/timePerFrame;
