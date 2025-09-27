@@ -20,13 +20,13 @@ public class KeyBoardInputs implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
-            gamePanel.updateDirection(PlayerDirections.LEFT);
+            gamePanel.getPlayer().updateDirection(PlayerDirections.LEFT);
         } else if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
-            gamePanel.updateDirection(PlayerDirections.UP);
+        	gamePanel.getPlayer().updateDirection(PlayerDirections.UP);
         } else if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
-            gamePanel.updateDirection(PlayerDirections.RIGHT);
+        	gamePanel.getPlayer().updateDirection(PlayerDirections.RIGHT);
         } else if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
-            gamePanel.updateDirection(PlayerDirections.DOWN);
+        	gamePanel.getPlayer().updateDirection(PlayerDirections.DOWN);
         }
     }
 
@@ -34,10 +34,10 @@ public class KeyBoardInputs implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT
-                || key == KeyEvent.VK_W || key == KeyEvent.VK_UP
-                || key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT
-                || key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
-            gamePanel.isPlayerMoving(false);
+            || key == KeyEvent.VK_W || key == KeyEvent.VK_UP
+            || key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT
+            || key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
+        	gamePanel.getPlayer().isPlayerMoving(false);
         }
     }
 }
