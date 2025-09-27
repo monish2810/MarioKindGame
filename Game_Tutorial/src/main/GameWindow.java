@@ -1,5 +1,8 @@
 package main;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+
 import javax.swing.JFrame;
 
 public class GameWindow extends JFrame{
@@ -13,8 +16,14 @@ public class GameWindow extends JFrame{
 		this.pack(); // Window to be sized to fit the preferred sizeand layouts of its subcomponents (we have one component -> JPanel)
 		this.setLocationRelativeTo(null);
 		this.setVisible(true); 
-		
-		
+		this.addWindowFocusListener(new WindowFocusListener() {
+			@Override
+			public void windowGainedFocus(WindowEvent e) {}
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+				gamePanel.getPlayer().stopWhenLostWindowFocus();
+			}
+		});
 	}
 	
 }
